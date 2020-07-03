@@ -26,15 +26,27 @@ db.init_app(app)
 # Routes
 # TO DO
 
-# with app.app_context():
-#     db.create_all()
-
-def populate():
+def populate_initial():
     db.create_all()
+
     tag = Tag(tag_name='tag', occurences_count=2)
+    adoc1 = MentionsInFile(file_name='adoc1', occurences_in_file_count=1)
+    adoc2 = MentionsInFile(file_name='adoc2', occurences_in_file_count=1)
+    adoc1_mention = Excerpt(text=str('blabla'))
+    adoc2_mention = Excerpt(text=str('sample text'))
+
+    adoc1.excerpts.append(adoc1_mention)
+    adoc2.excerpts.append(adoc2_mention)
+
+    tag.mentions.extend([adoc1, adoc2])
+
     db.session.add(tag)
+    db.session.add(adoc1)
+    db.session.add(adoc2)
+    db.session.add(adoc1_mention)
+    db.session.add(adoc2_mention)
+
     db.session.commit()
-    # adoc1 = MentionsInFile
 
 
 @app.route('/')

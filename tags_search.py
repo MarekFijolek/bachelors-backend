@@ -1,17 +1,4 @@
-class Excerpt:
-    text = ""
-
-class MentionsInFile:
-    file_name = ""
-    occurences_in_file_count = 0
-    excerpts = []
-
-class Tag:
-    tag_name = ""
-    occurences_count = 0
-    mentions = []
-
-#============================================
+from models import Tag, MentionsInFile, Excerpt
 
 def get_all_tag_data_in_file(file_path):
     import re
@@ -47,9 +34,25 @@ def get_adocs_list(dir_name):
     return adocs
 
 def get_all_tag_data(dir_path):
-    all_tag_data = {}
-    files = get_adocs_list("example_doc")
+    tags = {}
+    mentions_all = []
+    excerpts_all = []
+    files = get_adocs_list(dir_path)
+
     for file in files:
         if (tag_data := get_all_tag_data_in_file(file)):
-            all_tag_data[file] = tag_data
-    return(all_tag_data)
+            for tag, excerpts in tag_data.items():
+                if tag in tags:
+                    tags[tag].occurrences_count += len(excerpts)
+                else:
+                    tags[tag] = Tag(tag_name=tag, occurrences_count=len(excerpts))
+
+                file_name_relative = file.split("/", 1)[1]
+
+                excerpts_models = [Excerpt(text=excerpt) for excerpt in excerpts]
+                mentions_models = MentionsInFile(file_name=file_name_relative,occurrences_in_file_count=len(excerpts_models),excerpts=excerpts_models)
+
+                tags[tag].mentions.append(mentions_models)
+                mentions_all.append(mentions_models)
+                excerpts_all.extend(excerpts_models)
+    return {"tags": list(tags.values()), "mentions": mentions_all, "excerpts": excerpts_all}

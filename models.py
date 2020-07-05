@@ -5,7 +5,7 @@ class Tag(db.Model):
     
     uuid = db.Column(db.Integer, primary_key=True)
     tag_name = db.Column(db.String(256), index=True, unique=True)
-    occurences_count = db.Column(db.Integer)
+    occurrences_count = db.Column(db.Integer)
 
     mentions = db.relationship('MentionsInFile', backref='tag')
 
@@ -17,7 +17,7 @@ class MentionsInFile(db.Model):
 
     uuid = db.Column(db.Integer, primary_key=True)
     file_name = db.Column(db.String(256))
-    occurences_in_file_count = db.Column(db.Integer)
+    occurrences_in_file_count = db.Column(db.Integer)
 
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.uuid'))
     excerpts = db.relationship('Excerpt', backref='mention')

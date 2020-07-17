@@ -1,4 +1,4 @@
-from models import Tag, MentionsInFile, Excerpt
+from app.models import Tag, MentionsInFile, Excerpt
 
 def get_all_tag_data_in_file(file_path):
     import re

@@ -46,5 +46,10 @@ class DocsRepo:
     def is_up_to_date(self):
         return self.origin.fetch()[0].flags == 4
 
-    def pull(self):
+    def update(self):
+        self.origin.fetch()
         self.origin.pull()
+    
+    def get_version(self):
+        all_tags_sorted = sorted(self.repo.tags, key=lambda t: t.commit.committed_datetime)
+        return str(all_tags_sorted[-1])

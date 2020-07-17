@@ -33,7 +33,7 @@ def get_adocs_list(dir_name):
     
     return adocs
 
-def get_all_tag_data(dir_path):
+def get_all_tag_data_and_stamp_version(dir_path, version_to_stamp):
     tags = {}
     mentions_all = []
     excerpts_all = []
@@ -45,12 +45,12 @@ def get_all_tag_data(dir_path):
                 if tag in tags:
                     tags[tag].occurrences_count += len(excerpts)
                 else:
-                    tags[tag] = Tag(tag_name=tag, occurrences_count=len(excerpts))
+                    tags[tag] = Tag(tag_name=tag, occurrences_count=len(excerpts), version=version_to_stamp)
 
                 file_name_relative = file.split("/", 1)[1]
 
-                excerpts_models = [Excerpt(text=excerpt) for excerpt in excerpts]
-                mentions_models = MentionsInFile(file_name=file_name_relative,occurrences_in_file_count=len(excerpts_models),excerpts=excerpts_models)
+                excerpts_models = [Excerpt(text=excerpt, version=version_to_stamp) for excerpt in excerpts]
+                mentions_models = MentionsInFile(file_name=file_name_relative,occurrences_in_file_count=len(excerpts_models),excerpts=excerpts_models, version=version_to_stamp)
 
                 tags[tag].mentions.append(mentions_models)
                 mentions_all.append(mentions_models)

@@ -1,4 +1,5 @@
 from . import db
+from datetime import datetime
 
 class Tag(db.Model):
     __tablename__ = 'tags'
@@ -8,6 +9,8 @@ class Tag(db.Model):
     occurrences_count = db.Column(db.Integer)
 
     mentions = db.relationship('MentionsInFile', backref='tag')
+    version_id = db.Column(db.Integer, db.ForeignKey('versions.uuid'))
+    version = db.relationship("Version")
 
     def __repr__(self):
         return '<Tag %r>' % self.tag_name
@@ -21,6 +24,8 @@ class MentionsInFile(db.Model):
 
     tag_id = db.Column(db.Integer, db.ForeignKey('tags.uuid'))
     excerpts = db.relationship('Excerpt', backref='mention')
+    version_id = db.Column(db.Integer, db.ForeignKey('versions.uuid'))
+    version = db.relationship("Version")
 
     def __repr__(self):
         return '<Mentions of %r in file %r>' % (self.tag_id, self.file_name)
@@ -32,6 +37,18 @@ class Excerpt(db.Model):
     text = db.Column(db.Text)
 
     mentions_in_file_id = db.Column(db.Integer, db.ForeignKey('mentions.uuid'))
+    version_id = db.Column(db.Integer, db.ForeignKey('versions.uuid'))
+    version = db.relationship("Version")
 
     def __repr__(self):
         return '<Excerpt %r in file %r>' % (self.uuid, self.mentions_in_file_id)
+
+class Version(db.Model):
+    __tablename__ = "versions"
+
+    uuid = db.Column(db.Integer, primary_key=True)
+    version_name = db.Column(db.String(256), index=True, unique=True)
+    create_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Version %r>' % self.version_name

@@ -1,10 +1,12 @@
 from app import create_app, db
 from app.models import Tag, MentionsInFile, Excerpt
 from app.tags_search import get_all_tag_data
+from docs_repo import DocsRepo
 import click
 import os
 
 app = create_app()
+docs = DocsRepo(app.config['DOCUMENTATION_DIR'], app.config['DOCUMENTATION_URI'])
 
 def populate():
     all_tag_data = get_all_tag_data(app.config['DOCUMENTATION_DIR'])

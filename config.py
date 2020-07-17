@@ -6,6 +6,7 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     DOCUMENTATION_DIR = os.environ.get('DOCUMENTATION_DIR') or 'example_doc'
+    DOCUMENTATION_URI = os.environ.get('DOCUMENTATION_URI') or "https://github.com/MarekFijolek/example-docs.git"
 
     @staticmethod
     def init_app(app):

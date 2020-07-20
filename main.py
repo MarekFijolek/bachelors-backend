@@ -25,26 +25,30 @@ app.add_url_rule(
 )
 
 def update_documentation_and_db():
-    if not docs_repo.is_up_to_date():
-        print(">> New update in documentation detected! Updating.")
-        docs_repo.update()
-        insert_tag_data_to_db()
-    else:
-        print(">> No updates in documentation")
+    with app.app_context():
+        docs_repo.update_versions_info()
+
+        if not docs_repo.is_up_to_date():
+            new_docs_versions = docs_repo.get_next_versions()
+
+            for version in new_docs_versions:
+                docs_repo.set_version(version)
+                insert_tag_data_to_db()
+                print(">> Updated documentation to version %s" % version)
     
-
 def insert_tag_data_to_db():
-    version = Version(version_name=docs_repo.get_version())
-    all_tag_data = get_all_tag_data_and_stamp_version(app.config['DOCUMENTATION_DIR'], version)
+    with app.app_context():
+        version = Version(version_name=docs_repo.get_current_version())
+        all_tag_data = get_all_tag_data_and_stamp_version(app.config['DOCUMENTATION_DIR'], version)
 
-    db.create_all()
+        db.create_all()
 
-    db.session.add_all(all_tag_data['tags'])
-    db.session.add_all(all_tag_data['mentions'])
-    db.session.add_all(all_tag_data['excerpts'])
-    db.session.add(version)
+        db.session.add_all(all_tag_data['tags'])
+        db.session.add_all(all_tag_data['mentions'])
+        db.session.add_all(all_tag_data['excerpts'])
+        db.session.add(version)
 
-    db.session.commit()
+        db.session.commit()
 
 @app.shell_context_processor
 def make_shell_context():

@@ -5,7 +5,7 @@ class Tag(db.Model):
     __tablename__ = 'tags'
     
     uuid = db.Column(db.Integer, primary_key=True)
-    tag_name = db.Column(db.String(256), index=True, unique=True)
+    tag_name = db.Column(db.String(256), index=True)
     occurrences_count = db.Column(db.Integer)
 
     mentions = db.relationship('MentionsInFile', backref='tag')

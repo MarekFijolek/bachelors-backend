@@ -1,8 +1,7 @@
 FROM python:3.8
-WORKDIR /usr/src/app
-COPY ./requirements.txt /usr/src/app/requirements.txt
+COPY . /app
+WORKDIR /app
 RUN pip install -r requirements.txt
-COPY . /usr/src/app
 EXPOSE 5000
-ENV FLASK_APP /usr/src/app/main.py
+ENV FLASK_APP /app/main.py
 CMD ["flask", "run"]

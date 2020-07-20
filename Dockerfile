@@ -2,6 +2,5 @@ FROM python:3.8
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
-EXPOSE 5000
-ENV FLASK_APP /app/main.py
-CMD ["flask", "run"]
+EXPOSE 8000
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "main"]

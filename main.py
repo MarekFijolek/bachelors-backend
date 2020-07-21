@@ -9,7 +9,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 import click
 import os
-import time
 import atexit
 
 app = create_app()
@@ -57,5 +56,7 @@ def make_shell_context():
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=update_documentation_and_db, trigger="interval", minutes=1)
 scheduler.start()
+
+update_documentation_and_db()
 
 atexit.register(lambda: scheduler.shutdown())

@@ -7,6 +7,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     DOCUMENTATION_DIR = os.environ.get('DOCUMENTATION_DIR') or 'example_doc'
     DOCUMENTATION_URI = os.environ.get('DOCUMENTATION_URI') or "https://github.com/MarekFijolek/example-docs.git"
+    CORS_HEADERS = 'Content-Type'
 
     @staticmethod
     def init_app(app):

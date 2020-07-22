@@ -5,6 +5,7 @@ from app.docs_repo import DocsRepo
 from app.schemas import schema
 
 from flask_graphql import GraphQLView
+from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 
 import click
@@ -13,6 +14,7 @@ import atexit
 
 app = create_app()
 docs_repo = DocsRepo(app.config['DOCUMENTATION_DIR'], app.config['DOCUMENTATION_URI'])
+CORS(app)
 
 app.add_url_rule(
     '/',
@@ -34,7 +36,7 @@ def update_documentation_and_db():
                 docs_repo.set_version(version)
                 insert_tag_data_to_db()
                 print(">> Updated documentation to version %s" % version)
-    
+
 def insert_tag_data_to_db():
     with app.app_context():
         version = Version(version_name=docs_repo.get_current_version())

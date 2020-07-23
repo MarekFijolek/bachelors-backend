@@ -18,13 +18,21 @@ class VersionFilter(FilterSet):
     class Meta:
         model = Version
         fields = {
-            'version_name': ['eq']
+            'version_name': [...]
+        }
+
+class MentionsInFileFilter(FilterSet):
+    class Meta:
+        model = MentionsInFile
+        fields = {
+            'file_name': [...]
         }
 
 class CustomField(FilterableConnectionField):
     filters = {
         Tag: TagFilter(),
-        Version: VersionFilter()
+        Version: VersionFilter(),
+        MentionsInFile: MentionsInFileFilter()
     }
 
 # ==========================================

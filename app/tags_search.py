@@ -55,4 +55,5 @@ def get_all_tag_data_and_stamp_version(dir_path, version_to_stamp):
                 tags[tag].mentions.append(mentions_models)
                 mentions_all.append(mentions_models)
                 excerpts_all.extend(excerpts_models)
-    return {"tags": list(tags.values()), "mentions": mentions_all, "excerpts": excerpts_all}
+    tags_all = list(tags.values())
+    return (tags_all, mentions_all, excerpts_all)

@@ -40,13 +40,14 @@ def update_documentation_and_db():
 def insert_tag_data_to_db():
     with app.app_context():
         version = Version(version_name=docs_repo.get_current_version())
-        all_tag_data = get_all_tag_data_and_stamp_version(app.config['DOCUMENTATION_DIR'], version)
+
+        tags, mentions, excerpts = get_all_tag_data_and_stamp_version(app.config['DOCUMENTATION_DIR'], version)
 
         db.create_all()
 
-        db.session.add_all(all_tag_data['tags'])
-        db.session.add_all(all_tag_data['mentions'])
-        db.session.add_all(all_tag_data['excerpts'])
+        db.session.add_all(tags)
+        db.session.add_all(mentions)
+        db.session.add_all(excerpts)
         db.session.add(version)
 
         db.session.commit()

@@ -28,11 +28,19 @@ class MentionsInFileFilter(FilterSet):
             'file_name': [...]
         }
 
+class ExcerptsFilter(FilterSet):
+    class Meta:
+        model = Excerpt
+        fields = {
+            'text': [...]
+        }
+
 class CustomField(FilterableConnectionField):
     filters = {
         Tag: TagFilter(),
         Version: VersionFilter(),
-        MentionsInFile: MentionsInFileFilter()
+        MentionsInFile: MentionsInFileFilter(),
+        Excerpt: ExcerptsFilter()
     }
 
 # ==========================================
